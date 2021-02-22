@@ -27,6 +27,7 @@ mix.styles(['resources/admin/app-assets/vendors/css/animate/animate.css'], 'publ
 mix.styles(['resources/admin/app-assets/vendors/css/extensions/sweetalert2.min.css'], 'public/css/vendor/sweetalert2.min.css');
 mix.styles(['resources/admin/app-assets/vendors/css/extensions/swiper.min.css'], 'public/css/vendor/swiper.min.css');
 mix.styles(['resources/admin/app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css'], 'public/css/vendor/jquery.bootstrap-touchspin.css');
+mix.styles(['resources/admin/app-assets/vendors/css/tables/datatable/datatables.min.css'], 'public/css/vendor/datatables.min.css');
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,9 @@ mix.scripts(['public/js/vendor/moment.min.js'], 'public/js/vendor/moment.min.js'
 mix.scripts(['public/js/vendor/swiper.min.js'], 'public/js/vendor/swiper.min.js').version();
 mix.scripts(['public/js/vendor/dragula.min.js'], 'public/js/vendor/dragula.min.js').version();
 mix.scripts(['public/js/vendor/daterangepicker.js'], 'public/js/vendor/daterangepicker.js').version();
+mix.scripts(['resources/admin/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js'], 'public/js/vendor/dataTables.bootstrap4.min.js').version();
+mix.scripts(['resources/admin/app-assets/vendors/js/tables/datatable/datatables.min.js'], 'public/js/vendor/datatables.min.js').version();
+mix.scripts(['resources/admin/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js'], 'public/js/vendor/dataTables.buttons.min.js').version();
 /*
 |--------------------------------------------------------------------------
 | THEME JS
@@ -102,6 +106,8 @@ mix.scripts(['resources/admin/app-assets/vendors/js/forms/spinner/jquery.bootstr
 |--------------------------------------------------------------------------
 */
 mix.scripts(['resources/admin/app-assets/js/scripts/forms/select/form-select2.js'], 'public/js/custom/form-select2.js').version();
+//datatables
+mix.scripts(['resources/admin/app-assets/js/scripts/datatables/datatable.min.js'], 'public/js/custom/datatable.min.js').version();
 mix.scripts(['resources/admin/app-assets/js/scripts/pages/page-search.js'], 'public/js/custom/page-search.js').version();
 mix.scripts(['resources/js/select_icon.js'], 'public/js/custom/select_icon.js').version();
 mix.scripts(['resources/admin/app-assets/js/scripts/forms/form-repeater.js'], 'public/js/custom/form-repeater.js');

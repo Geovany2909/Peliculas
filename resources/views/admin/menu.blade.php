@@ -69,9 +69,15 @@
                 </a>
                 <ul class="menu-content">
                     <li class="@if(Request::path() == 'peliculas') active @endif">
-                        <a href="{{ route('peliculas.index') }}">
+                        <a href="{{ route('peliculas.filtro') }}">
                             <i class="bx bx-right-arrow-alt"></i>
                             <span class="menu-item" data-i18n="Analytics">Listar</span>
+                        </a>
+                    </li>
+                    <li class="@if(Request::path() == 'peliculas') active @endif">
+                        <a href="{{ route('peliculas.index') }}">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item" data-i18n="Analytics">Listar por filtro</span>
                         </a>
                     </li>
                 </ul>

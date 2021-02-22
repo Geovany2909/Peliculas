@@ -17,7 +17,7 @@
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/vendor/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/vendor/animate.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ mix('/css/vendor/sweetalert2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('/css/vendor/datatables.min.css') }}">
     @yield('css_vendor')
     <!-- END: Vendor CSS-->
     <!-- BEGIN: Theme CSS-->
@@ -107,6 +107,9 @@
 
     <!-- BEGIN: Custom JS-->
     <script src="{{ mix('/js/custom/form-select2.js') }}"></script>
+    <script src="{{ mix('/js/vendor/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ mix('/js/vendor/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ mix('/js/vendor/datatables.min.js') }}"></script>
     @yield('js_custom')
     <!-- END: Custom JS-->
 

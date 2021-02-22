@@ -10,12 +10,13 @@ use App\Models\HistoricoRenta;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use DataTables;
 
 class PeliculasController extends Controller
 {
     public function index(Request $request)
     {
-        //el metodo active esta definido en el model de peliculas
+        // el metodo active esta definido en el model de peliculas
         if ($request->orden != '') {
             $peliculas = Pelicula::where('status', $request->status)
                 ->where('existencias', '>', 0)
@@ -26,7 +27,26 @@ class PeliculasController extends Controller
         }
 
         $categorias = Categoria::all();
-        return view('dashboard.peliculas.index', compact('peliculas', 'categorias'));
+        return view('dashboard.peliculas.filtro', compact('peliculas', 'categorias'));
+    }
+
+    public function getPeliculasFiltro(){
+        return view('dashboard.peliculas.index');
+    }
+    public function getPeliculas(Request $request)
+    {
+        if ($request->ajax()) {
+            $model = Pelicula::with('categoria');
+            return Datatables::eloquent($model)
+                ->addColumn('categoria', function (Pelicula $p) {
+                    return $p->categoria->nombre;
+                })
+                ->addColumn('status', function (Pelicula $p) {
+                    return $p->status == 1 ?' <i class="bx bxs-circle text-success font-small-1 mr-50"></i>':' <i class="bx bxs-circle text-danger font-small-1 mr-50"></i>';
+                })
+                ->rawColumns(['status'])
+                ->make(true);
+        }
     }
 
     public function create()
@@ -85,8 +105,9 @@ class PeliculasController extends Controller
         return view('dashboard.renta_peliculas.compra', compact('pelicula'));
     }
 
-    public function listaCompradas(){
-        if(Auth::user()->hasRole('Cliente')){
+    public function listaCompradas()
+    {
+        if (Auth::user()->hasRole('Cliente')) {
             $peliculas = CompraPelicula::where('usuario_id', Auth::user()->id)->get();
         }
         return view('dashboard.peliculas.lista_compradas', compact('peliculas'));

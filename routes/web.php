@@ -23,6 +23,8 @@ Route::get('/', function () {
 });
 
 Route::get('/fechaDev',[RentaPeliculasController::class, 'multa']);
+Route::get('peliculas/list', [PeliculasController::class, 'getPeliculas'])->name('peliculas.list');
+Route::get('/dashboard/peliculas/filtradas', [PeliculasController::class, 'index'])->name('peliculas.index');
 
 Route::group(['prefix'=>'dashboard','middleware' => ['auth']], function(){
     Route::get('/', function () {
@@ -32,7 +34,7 @@ Route::group(['prefix'=>'dashboard','middleware' => ['auth']], function(){
 
     //rutas de peliculas
     Route::resource('peliculas', PeliculasController::class)->except(['index']);
-    Route::get('/peliculas', [PeliculasController::class, 'index'])->name('peliculas.index');
+    Route::get('/peliculas', [PeliculasController::class, 'getPeliculasFiltro'])->name('peliculas.filtro');
     Route::get('/peliculas/{tipo}', [PeliculasController::class, 'index']);
     Route::get('/peliculas/activar/{id}', [PeliculasController::class, 'activar'])->name('peliculas.activar');
     Route::get('/peliculas/desactivar/{id}', [PeliculasController::class, 'desactivar'])->name('peliculas.desactivar');
