@@ -16,7 +16,7 @@ class UsuariosController extends Controller
         $this->middleware('verified');
     }
     public function index(){
-
+        //Si el usuario es cliente solo muestra su usuario y no los demas
         if(Auth::user()->hasRole('Cliente')){
             $users = User::where('id', Auth::user()->id)->paginate(1);
         }else{
@@ -31,6 +31,11 @@ class UsuariosController extends Controller
         return view('dashboard.usuarios.edit', compact('user', 'roles'));
     }
 
+    /**
+     * Sirve para cambiar de roles a los usuarios, solo funciona si es un admin
+     * esto se valida en la vista de dashboard
+     * Para los roles y permisos se hizo uso de spatie/laravel-permission
+     */
     public function update(Request $request, $id){
         DB::beginTransaction();
         $user = User::findOrFail($id);

@@ -20,10 +20,11 @@ class RentaPeliculasController extends Controller
     }
     public function index()
     {
-        //el metodo active esta definido en el model de peliculas
         $peliculas = Pelicula::where('existencias', '>', 0)->get();
         $categorias = Categoria::all();
 
+        //condicional que evalua que si el usuario es admin devuelva 
+        //todas las rentas y si es cliente entonces solo aparacen renta a su nomnre
         if (Auth::user()->hasRole('Administrador')) {
             $rentas = RentaPelicula::where('regresado', 0)->get();
         } else {
@@ -34,8 +35,10 @@ class RentaPeliculasController extends Controller
 
     public function create()
     {
+        
         $peliculas = Pelicula::all();
         if (Auth::user()->hasRole('Administrador')) {
+            //solo muestra clientes
             $usuarios = User::role('Cliente')->get();
         } else {
             $usuarios = User::find(Auth::user()->id);
@@ -58,7 +61,7 @@ class RentaPeliculasController extends Controller
 
     public function store(Request $request)
     {
-        // ddd($request);
+        //funcion que sirve para guardar una renta de pelicula
         DB::beginTransaction();
         $renta = new RentaPelicula();
         $renta->usuario_id = $request->usuario_id;
@@ -114,6 +117,8 @@ class RentaPeliculasController extends Controller
 
     public function activar($id)
     {
+        //sirve para cambiar el estado de la pelicula a true = 1 
+
         DB::beginTransaction();
         $renta = RentaPelicula::findOrFail($id);
         // ddd($renta);
@@ -125,6 +130,7 @@ class RentaPeliculasController extends Controller
     }
     public function desactivar($id)
     {
+        //sirve para cambiar el estado de la pelicula a false = 0
         DB::beginTransaction();
 
         $renta = RentaPelicula::findOrFail($id);
@@ -135,6 +141,10 @@ class RentaPeliculasController extends Controller
         return redirect()->route('renta-peliculas.index');
     }
 
+    /**funcion que le asigna una multa a el cliente 
+     * si se pasa de la fecha de devolucion
+     * con ajax se manda a llamar esta funcion, asi lo cambios se vean rapido en el frontend
+     */
     public function multa()
     {
         $fechaHoy = date('Y-m-d', strtotime(now()));
@@ -149,10 +159,13 @@ class RentaPeliculasController extends Controller
                 echo 'cambie';
             }
         } else {
-            echo 'no hat nada';
+            echo 'no hay nada';
         }
     }
 
+    /**Sirve para que el usuario regrese la pelicula
+     * se hace un historial de el suceso
+     */
     public function regresarPelicula($id){
         DB::beginTransaction();
         $renta = RentaPelicula::find($id);
@@ -174,6 +187,7 @@ class RentaPeliculasController extends Controller
         return redirect()->route('renta-peliculas.index');
     }
 
+    //funcion que muestra los historicos, se puede ver en el menu historicos
     public function historico(){
         $historico_renta = HistoricoRenta::all();
         return view('dashboard.renta_peliculas.historico', compact('historico_renta'));

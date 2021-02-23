@@ -26,7 +26,7 @@ class PeliculasController extends Controller
     }
     public function index(Request $request)
     {
-        // el metodo active esta definido en el model de peliculas
+        //se filtra por el orden de las peliculas
         if ($request->orden != '') {
             $peliculas = Pelicula::where('status', $request->status)
                 ->where('existencias', '>', 0)
@@ -45,6 +45,8 @@ class PeliculasController extends Controller
     }
     public function getPeliculas(Request $request)
     {
+        //se llena el datatable con esta funcion.
+        //se ocupa el paquete Datatables para mandar una respuesta JSON
         if ($request->ajax()) {
             $model = Pelicula::with('categoria')->where('status', 1);
             return Datatables::eloquent($model)
@@ -73,7 +75,7 @@ class PeliculasController extends Controller
 
     public function store(Request $request)
     {
-        // ddd($request);
+        //se registra un nueva pelicula
         DB::beginTransaction();
         $pelicula = new Pelicula();
         $pelicula->nombre = $request->nombre;
@@ -109,6 +111,7 @@ class PeliculasController extends Controller
     public function show()
     {
     }
+    /*funcion que sirve para que el cliente pueda comprar una pelicula*/
     public function comprar($id)
     {
         $pelicula = Pelicula::find($id);
@@ -125,6 +128,7 @@ class PeliculasController extends Controller
 
     public function comprarStore(Request $request)
     {
+        //funcion que sirve para que un cliente compre la pelicula deseada
         DB::beginTransaction();
 
         $pelicula = Pelicula::find($request->pelicula_id);
@@ -137,8 +141,7 @@ class PeliculasController extends Controller
         $compra->precio = $compra->pelicula->precioVenta;
         $compra->save();
 
-        //se crea el historico
-
+        //se crea el historico, vease en el menu historicos
         $historico_renta = new HistoricoRenta();
         $historico_renta->usuario_id = $request->usuario_id;
         $historico_renta->pelicula_id = $request->pelicula_id;
@@ -152,6 +155,7 @@ class PeliculasController extends Controller
 
     public function activar($id)
     {
+        //sirve para cambiar el estado de la pelicula a true = 1 
         DB::beginTransaction();
         $pelicula = Pelicula::findOrFail($id);
         $pelicula->status = 1;
@@ -162,6 +166,7 @@ class PeliculasController extends Controller
     }
     public function desactivar($id)
     {
+         //sirve para cambiar el estado de la pelicula a false = 0
         DB::beginTransaction();
         $pelicula = Pelicula::findOrFail($id);
         $pelicula->status = 0;
@@ -172,6 +177,7 @@ class PeliculasController extends Controller
     }
 
     public function destroy($id){
+        //se elimina permanentemente una pelicula
         DB::beginTransaction();
         $pelicula = Pelicula::findOrFail($id);
         $pelicula->delete();
@@ -179,6 +185,11 @@ class PeliculasController extends Controller
         Alert::warning('Borrada!', 'la pelicula fue borrada exitosamente');
         return redirect()->back();
     }
+
+    /**Funcion que sirve para exportar en formato excel, 
+     * se ocupa la misma ruta, la ruta le injecta el paramentro del "tipo" que 
+     * significa la tabla que exportara, se hace uso del paquete laravel/excel
+     */
     public function exportCSV($tipo = null)
     {
         switch ($tipo) {
@@ -193,9 +204,13 @@ class PeliculasController extends Controller
                 break;
         }
     }
+
+    /**Se hace uso del paquete dompdf */
     public function exportPDF($tipo)
     {
+        //el scope OrderCategoria se encuentra en el modelo
         $peliculas = Pelicula::OrderCategoria()->get();
+        //sirve para que en el archivo pdf solo aparezcan usuarios cliente
         $usuarios = User::role('Cliente')->get();
         $historico_renta = HistoricoRenta::all();
 
