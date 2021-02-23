@@ -19,6 +19,12 @@
                     <h4 class="card-title">Todas las peliculas</h4>
                 </div>
                 <div class="card-content">
+                    @role('Administrador')
+                    <a href="{{ route('peliculas.export','peliculas') }}" class="btn btn-success">
+                        Export Excel</a>
+                    <a href="{{ route('peliculas.export-pdf','peliculas') }}" class="btn btn-success">
+                        Export PDF</a>
+                    @endrole
                     <div class="card-body card-dashboard">
                         <div class="table-responsive">
                             <table class="table zero-configuration" id="datatableP">

@@ -14,6 +14,10 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class RentaPeliculasController extends Controller
 {
+    public function __construct()
+    {   
+        $this->middleware('verified');
+    }
     public function index()
     {
         //el metodo active esta definido en el model de peliculas
@@ -168,5 +172,10 @@ class RentaPeliculasController extends Controller
         DB::commit();
         Alert::info('Devuelta!', 'La pelicula fue devuelta');
         return redirect()->route('renta-peliculas.index');
+    }
+
+    public function historico(){
+        $historico_renta = HistoricoRenta::all();
+        return view('dashboard.renta_peliculas.historico', compact('historico_renta'));
     }
 }

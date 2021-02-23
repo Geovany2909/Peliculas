@@ -13,4 +13,12 @@ class HistoricoRenta extends Model
         'usuario_id',
         'descripciom',
     ];
+
+    public function pelicula(){
+        return $this->hasOne(Pelicula::class, 'id', 'pelicula_id');
+    }
+    
+    public function usuario(){
+        return $this->hasOne(User::class, 'id', 'usuario_id');
+    }
 }

@@ -14,21 +14,17 @@
     <div class="col-12 col-sm-12 mb-2">
         <div class="content-body">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-4">
                     <section class="search-bar-wrapper">
-                        <div class="search-bar">
-                            {!! Form::open(['url'=>['usuario/find'], 'method'=>'get']) !!}
-                            <fieldset class="search-input form-group position-relative">
-                                {!! Form::text('search', request()->input('search'), ['class'=>'form-control
-                                rounded-right form-control-lg shadow pl-2',
-                                'placeholder'=>'Buscar','autofocus','autocomplete'=>'off']) !!}
-                                <button class="btn btn-primary search-btn rounded" type="submit">
-                                    <span class="d-none d-sm-block">Buscar</span>
-                                    <i class="bx bx-search d-block d-sm-none"></i>
-                                </button>
-                            </fieldset>
-                            {!! Form::close() !!}
+                        @role('Administrador')
+                        <div class="search-bar row">
+                            <a href="{{ route('peliculas.export','usuarios') }}" class="btn btn-success">
+                                Export Excel</a>
+                            &nbsp;&nbsp;
+                            <a href="{{ route('peliculas.export-pdf','usuarios') }}" class="btn btn-success">
+                                Export PDF</a>
                         </div>
+                        @endrole
                     </section>
                 </div>
                 <div class="col-md-2">
@@ -52,9 +48,10 @@
                     </div>
                     <div>
                         <h5>{{ $user->name}}</h5>
-                        {{-- <div class="card-subtitle">{{ $user->roles()->first()->name }} ({{ $user->email }})</div> --}}
+                        <div class="card-subtitle">{{ $user->roles()->first()->name }} ({{ $user->email }})</div>
                     </div>
                 </div>
+                @role('Administrador')
                 <div class="heading-elements">
                     <div class="dropdown">
                         <span
@@ -62,21 +59,14 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
                         <div class="dropdown-menu dropdown-menu-right" id="items">
                             {{-- verificamos que tenga el permiso de editar --}}
-                            @if (auth()->user()->hasRole('Administrador'))
+
                             <a class="dropdown-item" href="{{ route('users.edit', $user->id) }}">
                                 <i class="bx bx-edit-alt mr-1"></i>Editar
                             </a>
-                            @endif
-
-                            @if (!(auth()->user()->id == $user->id))
-                            <a class="dropdown-item" href="{{ route('users.destroy', $user->id) }}" id="2">
-                                <i class=" bx bx-archive-in mr-1"></i>Archivar
-                            </a>
-                            @endif
                         </div>
                     </div>
-
                 </div>
+                @endrole
             </div>
             <div class="card-content">
                 <div Class="card-body">

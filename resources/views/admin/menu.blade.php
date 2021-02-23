@@ -26,7 +26,7 @@
                 </a>
                 <ul class="menu-content">
                     <li class="@if(Request::path() == 'home') active @endif">
-                        <a href="/home">
+                        <a href="/dashboard">
                             <i class="bx bx-right-arrow-alt"></i>
                             <span class="menu-item" data-i18n="Analytics">Panel</span>
                         </a>
@@ -107,6 +107,15 @@
                     </li>
                 </ul>
             </li>
+            @role('Administrador')
+            <li class=" nav-item">
+                <a href="{{ route('historico') }}">
+                    <i class="bx bxs-user-badge"></i>
+                    <rect class="lievo-donotdraw lievo-likestroke lievo-altstroke" x="6" y="8" opacity="0.5" fill="#8baff3ad" width="48" height="30" stroke="none" style="stroke-width: 0;"></rect>
+                    <span class="menu-title" data-i18n="Dashboard">Historicos</span>
+                </a>
+            </li>
+            @endrole
         </ul>
 
     </div>

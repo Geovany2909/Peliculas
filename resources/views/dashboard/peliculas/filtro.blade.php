@@ -101,38 +101,50 @@
                                 <td>
                                     <a href="{{ route('peliculas.edit', $pelicula->id) }}" title="Editar">
                                         <i class="badge-circle badge-circle-light-secondary
-                                            bx bx-edit-alt font-medium-4">
+                                            bx bx-edit-alt text-info font-medium-4">
                                         </i>
                                     </a>
-                                    <br><br>
                                     <a href="{{ $pelicula->status == 0 ? route('peliculas.activar',$pelicula->id): 
                                         route('peliculas.desactivar', $pelicula->id) }}" 
                                         title="{{ $pelicula->status == 0 ? 'Activar' : 'Desactivar'}}">
                                         <i class="badge-circle badge-circle-light-secondary
-                                            bx bx-archive-in font-medium-4">
+                                            bx bx-archive-in {{ $pelicula->status == 0 ? 'text-success' : 'text-info'}}
+                                            font-medium-4">
                                         </i>
                                     </a>
+                                    <a href="{{ route('peliculas.destroy',$pelicula->id)}}" title"Eliminar"
+                                        onclick="event.preventDefault();
+                                            document.getElementById('delete-pe').submit();"">
+                                        <i class="badge-circle badge-circle-light-secondary
+                                            bx bx-trash-alt text-danger font-medium-4">
+                                        </i>
+                                    </a>
+                                    <form id="delete-pe" method="POST" action="{{ route('peliculas.destroy',$pelicula->id) }}"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                                 @endif
                                 @if(Auth::user()->hasRole('Cliente'))
                                 <td>
                                     <a href="{{ route('renta-peliculas.create') }}" title="Rentar">
                                         <i class="badge-circle badge-circle-light-secondary
-                                            bx bx-edit-alt font-medium-4">
+                                            bx bxs-basket text-success font-medium-4">
                                         </i>
                                     </a>
                                     <br><br>
                                     <a href="{{ route('peliculas.compra', $pelicula->id) }}" 
                                         title="Comprar Pelicula">
                                         <i class="badge-circle badge-circle-light-secondary
-                                            bx bx-archive-in font-medium-4">
+                                        bx bxs-shopping-bag text-warning font-medium-4">
                                         </i>
                                     </a>
                                 </td>
                                 @endif
                             </tr>
                             @empty
-                                <h4>No hay peliculas registradas</h4>
+                                <h4>No hay peliculas disponibles</h4>
                             @endforelse
                         </tbody>
                     </table>

@@ -20,6 +20,10 @@ class Pelicula extends Model
         return $query->where('status', 1);
     }
 
+    public function scopeOrderCategoria($query){
+        return $query->orderBy('categoria_id', 'ASC');
+    }
+
     public function categoria(){
         return $this->hasOne(Categoria::class, 'id', 'categoria_id');
     }

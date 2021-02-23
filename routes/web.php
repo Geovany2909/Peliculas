@@ -4,33 +4,25 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PeliculasController;
 use App\Http\Controllers\RentaPeliculasController;
-use App\Models\RentaPelicula;
+use App\Http\Controllers\UsuariosController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/fechaDev',[RentaPeliculasController::class, 'multa']);
 Route::get('peliculas/list', [PeliculasController::class, 'getPeliculas'])->name('peliculas.list');
 Route::get('/dashboard/peliculas/filtradas', [PeliculasController::class, 'index'])->name('peliculas.index');
+Route::get('peliculas/{tipo}/exportCSV', [PeliculasController::class, 'exportCSV'])->name('peliculas.export');
+Route::get('peliculas/{tipo}/exportPDF/', [PeliculasController::class, 'exportPDF'])->name('peliculas.export-pdf');
+Route::get('historicos', [RentaPeliculasController::class, 'historico'])->name('historico');
+
 
 Route::group(['prefix'=>'dashboard','middleware' => ['auth']], function(){
-    Route::get('/', function () {
-        $users = User::paginate(4);
-        return view('dashboard.dashboard', compact('users'));
-    })->middleware(['auth'])->name('dashboard');
+    Route::get('/', [UsuariosController::class,'index'])->name('dashboard');
 
     //rutas de peliculas
     Route::resource('peliculas', PeliculasController::class)->except(['index']);
@@ -44,13 +36,11 @@ Route::group(['prefix'=>'dashboard','middleware' => ['auth']], function(){
     //rutas de renta de peliculas
     Route::resources([
         'renta-peliculas'=> RentaPeliculasController::class,
-        'users'=> User::class,
+        'users'=> UsuariosController::class,
     ]);
     Route::get('/renta-peliculas/activar/{id}', [RentaPeliculasController::class, 'activar'])->name('renta-peliculas.activar');
     Route::get('/renta-peliculas/desactivar/{id}', [RentaPeliculasController::class, 'desactivar'])->name('renta-peliculas.desactivar');
     Route::get('/renta-peliculas/regresar/{id}', [RentaPeliculasController::class, 'regresarPelicula'])->name('renta-peliculas.regresar');
-    
-    
 });
 
 

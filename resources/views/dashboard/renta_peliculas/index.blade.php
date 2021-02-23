@@ -73,7 +73,7 @@
                                 <td>
                                     <a href="{{ route('renta-peliculas.regresar',$renta->id) }}" title="Regresar pelicula">
                                         <i class="badge-circle badge-circle-light-secondary
-                                            bx bx-edit-alt font-medium-4">
+                                            bx bx-reset text-info font-medium-4">
                                         </i>
                                     </a>
                                 </td>
